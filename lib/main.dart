@@ -103,20 +103,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   pickImage() async {
     String l = "";
+    String? img;
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       withData: true,
     );
     if (result != null) {
       setState(() {
         images = result.files.first.bytes;
+        img = result.files.first.path;
       });
-      InputImage inputImage = InputImage.fromBytes(
-          bytes: images!,
-          metadata: InputImageMetadata(
-              size: const Size(250, 250),
-              rotation: InputImageRotation.rotation0deg,
-              format: InputImageFormat.bgra8888,
-              bytesPerRow: 0));
+      InputImage inputImage = InputImage.fromFilePath(img!);
       List labels = await imageLabeler.processImage(inputImage);
       for (ImageLabel label in labels) {
         l = "je constate un ${label.label} avec une confiance de ${label.confidence * 100} %\n";
@@ -168,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             (images != null) ? Image.memory(images!) : Container(),
             Spacer(),
-            Text(laLangue)
+            SingleChildScrollView(child: Text(laLangue))
           ],
         ),
       ),
