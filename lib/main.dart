@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:mlprojet2024/background.dart';
 import 'package:mlprojet2024/firebase_options.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -130,43 +131,48 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: phraseTapped,
+      body: Stack(
+        children: [
+          const MyBackground(),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  controller: phraseTapped,
+                ),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    checkLangue();
+                  },
+                  child: const Text("Déterminer la langue"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    checkMultipleLangue();
+                  },
+                  child: Text("Multiple langue"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    translate();
+                  },
+                  child: Text("Traduire"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    pickImage();
+                  },
+                  child: Text("Click image"),
+                ),
+                (images != null) ? Image.memory(images!) : Container(),
+                Spacer(),
+                SingleChildScrollView(child: Text(laLangue))
+              ],
             ),
-            Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                checkLangue();
-              },
-              child: const Text("Déterminer la langue"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                checkMultipleLangue();
-              },
-              child: Text("Multiple langue"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                translate();
-              },
-              child: Text("Traduire"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                pickImage();
-              },
-              child: Text("Click image"),
-            ),
-            (images != null) ? Image.memory(images!) : Container(),
-            Spacer(),
-            SingleChildScrollView(child: Text(laLangue))
-          ],
-        ),
+          ),
+        ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
